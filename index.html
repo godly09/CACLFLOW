@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CalcFlow - Ultimate Calculator Hub. Free online calculators for SIP, mortgage, salary, BMI, calories, percentages & more. Fast, accurate, and mobile-friendly.">
+    <meta name="keywords" content="SIP calculator, mortgage calculator, BMI calculator, calorie calculator, salary calculator, percentage calculator, age calculator, financial tools, health calculators">
+    <meta name="author" content="CalcFlow Team">
+    
+    <title>CalcFlow - Ultimate Calculator Hub | Financial & Health Tools</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #00D9FF;
+            --accent: #FF6584;
+            --dark: #0F0F23;
+            --darker: #070715;
+            --light: #F5F5F5;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-alt: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        /* Header Styles */
+        .navbar {
+            background-color: rgba(15, 15, 35, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary) !important;
+            text-shadow: 0 0 10px rgba(108, 99, 255, 0.7);
+        }
+        
+        .nav-link {
+            color: var(--light) !important;
+            margin: 0 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1rem;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(7, 7, 21, 0.9), rgba(7, 7, 21, 0.9)), 
+                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920') center/cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flow-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0.3;
+            animation: flow 4s ease-in-out infinite;
+        }
+        
+        .flow-line:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .flow-line:nth-child(2) { left: 30%; animation-delay: 0.5s; }
+        .flow-line:nth-child(3) { left: 50%; animation-delay: 1s; }
+        .flow-line:nth-child(4) { left: 70%; animation-delay: 1.5s; }
+        .flow-line:nth-child(5) { left: 90%; animation-delay: 2s; }
+        
+        @keyframes flow {
+            0%, 100% { transform: translateY(-100%); }
+            50% { transform: translateY(100%); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(108, 99, 255, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Calculator Grid */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .calc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calc-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .calc-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .calc-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .calc-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .calc-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+        
+        .calc-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+        
+        .calc-btn {
+            background: var(--gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .calc-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+            color: white;
+        }
+        
+        /* Calculator Sections */
+        .calc-section {
+            padding: 5rem 0;
+            margin-top: 3rem;
+            display: none;
+        }
+        
+        .calc-section.active {
+            display: block;
+        }
+        
+        .calc-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .calc-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Calculator Interface */
+        .calc-interface {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            color: var(--light);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+            color: white;
+        }
+        
+        .btn-calc {
+            background: var(--gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+            width: 100%;
+        }
+        
+        .btn-calc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 25px rgba(108, 99, 255, 0.6);
+            color: white;
+        }
+        
+        /* Results */
+        .results {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Guide Section */
+        .guide-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .guide-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .guide-section ol {
+            padding-left: 1.5rem;
+        }
+        
+        .guide-section li {
+            margin-bottom: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* BMI Categories */
+        .bmi-category {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .bmi-underweight {
+            background: #3498db;
+            color: white;
+        }
+        
+        .bmi-normal {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .bmi-overweight {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .bmi-obese {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        /* Features */
+        .features {
+            padding: 5rem 0;
+            background-color: var(--dark);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 5rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.8rem;
+            margin: 0 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-calculator"></i> CalcFlow</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#calculators">Calculators</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="flow-line"></div>
+        <div class="flow-line"></div>
+        <div class="flow-line"></div>
+        <div class="flow-line"></div>
+        <div class="flow-line"></div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1>Ultimate Calculator Hub</h1>
+                <p>CalcFlow brings together all essential calculators in one place. From financial planning to health tracking, calculate with precision and ease.</p>
+                
+                <div class="calculator-grid" id="homeCalculators">
+                    <!-- SIP Calculator -->
+                    <div class="calc-card" data-calc="sip">
+                        <div class="calc-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>SIP Calculator</h3>
+                        <p Calculate your Systematic Investment Plan returns and wealth growth over time.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                    
+                    <!-- Percentage Calculator -->
+                    <div class="calc-card" data-calc="percentage">
+                        <div class="calc-icon">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <h3>Percentage Calculator</h3>
+                        <p>Quickly calculate percentages, discounts, and proportions with ease.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                    
+                    <!-- Mortgage Calculator -->
+                    <div class="calc-card" data-calc="mortgage">
+                        <div class="calc-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3>Mortgage Calculator</h3>
+                        <p>Plan your home loan with accurate EMI calculations and interest breakdowns.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                    
+                    <!-- Salary Calculator -->
+                    <div class="calc-card" data-calc="salary">
+                        <div class="calc-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>Salary Calculator</h3>
+                        <p>Calculate your net salary after taxes and deductions.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                    
+                    <!-- Calorie Calculator -->
+                    <div class="calc-card" data-calc="calorie">
+                        <div class="calc-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>Calorie Calculator</h3>
+                        <p>Determine your daily calorie needs based on your activity level and goals.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                    
+                    <!-- BMI Calculator -->
+                    <div class="calc-card" data-calc="bmi">
+                        <div class="calc-icon">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <h3>BMI Calculator</h3>
+                        <p>Check your Body Mass Index and understand your weight category.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                    
+                    <!-- Age Calculator -->
+                    <div class="calc-card" data-calc="age">
+                        <div class="calc-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <h3>Age Calculator</h3>
+                        <p>Calculate your exact age in years, months, and days.</p>
+                        <button class="calc-btn">Calculate Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Sections -->
+    <div class="container">
+        <!-- SIP Calculator Section -->
+        <section id="sip" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-chart-line me-3"></i>SIP Calculator</h2>
+                <p>Calculate your investment growth with Systematic Investment Plan</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="sipForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Monthly Investment (₹)</label>
+                                        <input type="number" class="form-control" id="sipAmount" placeholder="5000" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Expected Annual Return (%)</label>
+                                        <input type="number" class="form-control" id="sipRate" placeholder="12" step="0.1" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Investment Period (Years)</label>
+                                <input type="number" class="form-control" id="sipYears" placeholder="10" required>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate Returns</button>
+                        </form>
+                        
+                        <div class="results" id="sipResults">
+                            <div class="result-item">
+                                <span class="result-label">Total Investment</span>
+                                <span class="result-value" id="sipInvestment">₹0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Expected Returns</span>
+                                <span class="result-value" id="sipReturns">₹0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Total Value</span>
+                                <span class="result-value" id="sipTotal">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use SIP Calculator</h3>
+                        <ol>
+                            <li>Enter your monthly investment amount</li>
+                            <li>Input expected annual return rate</li>
+                            <li>Specify investment duration in years</li>
+                            <li>Click calculate to see projected returns</li>
+                        </ol>
+                        <p class="mt-3"><strong>Formula:</strong> FV = P × ((1 + r)^n - 1) / r</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Percentage Calculator Section -->
+        <section id="percentage" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-percent me-3"></i>Percentage Calculator</h2>
+                <p>Calculate percentages quickly and accurately</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="percentageForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Value</label>
+                                        <input type="number" class="form-control" id="partValue" placeholder="25" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Total Value</label>
+                                        <input type="number" class="form-control" id="totalValue" placeholder="100" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate Percentage</button>
+                        </form>
+                        
+                        <div class="results" id="percentageResults">
+                            <div class="result-item">
+                                <span class="result-label">Percentage</span>
+                                <span class="result-value" id="percentageResult">0%</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Fraction</span>
+                                <span class="result-value" id="fractionResult">0/1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use Percentage Calculator</h3>
+                        <ol>
+                            <li>Enter the part value (what you have)</li>
+                            <li>Enter the total value (the whole amount)</li>
+                            <li>Click calculate to get percentage</li>
+                            <li>Result shows both percentage and fraction</li>
+                        </ol>
+                        <p class="mt-3"><strong>Formula:</strong> Percentage = (Part / Total) × 100</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mortgage Calculator Section -->
+        <section id="mortgage" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-home me-3"></i>Mortgage Calculator</h2>
+                <p>Calculate your home loan EMI and total interest</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="mortgageForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Loan Amount (₹)</label>
+                                        <input type="number" class="form-control" id="loanAmount" placeholder="5000000" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Annual Interest Rate (%)</label>
+                                        <input type="number" class="form-control" id="interestRate" placeholder="8.5" step="0.1" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Loan Tenure (Years)</label>
+                                <input type="number" class="form-control" id="loanTenure" placeholder="20" required>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate EMI</button>
+                        </form>
+                        
+                        <div class="results" id="mortgageResults">
+                            <div class="result-item">
+                                <span class="result-label">Monthly EMI</span>
+                                <span class="result-value" id="emiAmount">₹0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Total Interest</span>
+                                <span class="result-value" id="totalInterest">₹0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Total Payment</span>
+                                <span class="result-value" id="totalPayment">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use Mortgage Calculator</h3>
+                        <ol>
+                            <li>Enter your loan amount</li>
+                            <li>Input annual interest rate</li>
+                            <li>Specify loan tenure in years</li>
+                            <li>Get your monthly EMI and total interest</li>
+                        </ol>
+                        <p class="mt-3"><strong>Formula:</strong> EMI = P × r × (1 + r)^n / ((1 + r)^n - 1)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Salary Calculator Section -->
+        <section id="salary" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-money-bill-wave me-3"></i>Salary Calculator</h2>
+                <p>Calculate your take-home salary after deductions</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="salaryForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Gross Monthly Salary (₹)</label>
+                                        <input type="number" class="form-control" id="grossSalary" placeholder="50000" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Professional Tax (₹)</label>
+                                        <input type="number" class="form-control" id="profTax" placeholder="200" value="200">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Provident Fund (%)</label>
+                                        <input type="number" class="form-control" id="pfRate" placeholder="12" value="12">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Income Tax (%)</label>
+                                        <input type="number" class="form-control" id="taxRate" placeholder="10" value="10">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate Net Salary</button>
+                        </form>
+                        
+                        <div class="results" id="salaryResults">
+                            <div class="result-item">
+                                <span class="result-label">Gross Salary</span>
+                                <span class="result-value" id="grossResult">₹0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Total Deductions</span>
+                                <span class="result-value" id="deductionsResult">₹0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Net Salary</span>
+                                <span class="result-value" id="netResult">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use Salary Calculator</h3>
+                        <ol>
+                            <li>Enter your gross monthly salary</li>
+                            <li>Input professional tax amount</li>
+                            <li>Enter PF and income tax percentages</li>
+                            <li>Get your net take-home salary</li>
+                        </ol>
+                        <p class="mt-3"><strong>Formula:</strong> Net Salary = Gross - (PF + Tax + PT)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calorie Calculator Section -->
+        <section id="calorie" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-fire me-3"></i>Calorie Calculator</h2>
+                <p>Calculate your daily calorie requirements</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="calorieForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="calAge" placeholder="30" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Weight (kg)</label>
+                                        <input type="number" class="form-control" id="calWeight" placeholder="70" step="0.1" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Height (cm)</label>
+                                        <input type="number" class="form-control" id="calHeight" placeholder="175" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Gender</label>
+                                        <select class="form-select" id="calGender" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Activity Level</label>
+                                <select class="form-select" id="calActivity" required>
+                                    <option value="">Select Activity Level</option>
+                                    <option value="1.2">Sedentary (little or no exercise)</option>
+                                    <option value="1.375">Light (exercise 1-3 days/week)</option>
+                                    <option value="1.55">Moderate (exercise 3-5 days/week)</option>
+                                    <option value="1.725">Active (exercise 6-7 days/week)</option>
+                                    <option value="1.9">Very Active (hard exercise daily)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate Calories</button>
+                        </form>
+                        
+                        <div class="results" id="calorieResults">
+                            <div class="result-item">
+                                <span class="result-label">BMR (Basal Metabolic Rate)</span>
+                                <span class="result-value" id="bmrResult">0 cal</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Daily Calorie Needs</span>
+                                <span class="result-value" id="dailyCalories">0 cal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use Calorie Calculator</h3>
+                        <ol>
+                            <li>Enter your age, weight, and height</li>
+                            <li>Select your gender</li>
+                            <li>Choose your activity level</li>
+                            <li>Get your BMR and daily calorie needs</li>
+                        </ol>
+                        <p class="mt-3"><strong>Formula:</strong> Mifflin-St Jeor Equation for BMR</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BMI Calculator Section -->
+        <section id="bmi" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-weight me-3"></i>BMI Calculator</h2>
+                <p>Calculate your Body Mass Index and health category</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="bmiForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Weight (kg)</label>
+                                        <input type="number" class="form-control" id="bmiWeight" placeholder="70" step="0.1" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Height (cm)</label>
+                                        <input type="number" class="form-control" id="bmiHeight" placeholder="175" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate BMI</button>
+                        </form>
+                        
+                        <div class="results" id="bmiResults">
+                            <div class="result-item">
+                                <span class="result-label">BMI</span>
+                                <span class="result-value" id="bmiValue">0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Category</span>
+                                <span class="result-value" id="bmiCategory">
+                                    <span class="bmi-category">-</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use BMI Calculator</h3>
+                        <ol>
+                            <li>Enter your weight in kilograms</li>
+                            <li>Enter your height in centimeters</li>
+                            <li>Click calculate to get your BMI</li>
+                            <li>Check your weight category</li>
+                        </ol>
+                        <p class="mt-3"><strong>Formula:</strong> BMI = Weight (kg) / (Height (m))²</p>
+                        <p class="mt-2"><strong>Categories:</strong></p>
+                        <ul>
+                            <li>&lt; 18.5: Underweight</li>
+                            <li>18.5-24.9: Normal</li>
+                            <li>25-29.9: Overweight</li>
+                            <li>≥ 30: Obese</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Age Calculator Section -->
+        <section id="age" class="calc-section">
+            <div class="calc-header">
+                <h2><i class="fas fa-birthday-cake me-3"></i>Age Calculator</h2>
+                <p>Calculate your exact age in years, months, and days</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calc-interface">
+                        <form id="ageForm">
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="birthDate" required>
+                            </div>
+                            <button type="submit" class="btn-calc">Calculate Age</button>
+                        </form>
+                        
+                        <div class="results" id="ageResults">
+                            <div class="result-item">
+                                <span class="result-label">Years</span>
+                                <span class="result-value" id="ageYears">0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Months</span>
+                                <span class="result-value" id="ageMonths">0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Days</span>
+                                <span class="result-value" id="ageDays">0</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Total Days</span>
+                                <span class="result-value" id="totalDays">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="guide-section">
+                        <h3>How to Use Age Calculator</h3>
+                        <ol>
+                            <li>Select your date of birth</li>
+                            <li>Click calculate to get exact age</li>
+                            <li>View age in years, months, and days</li>
+                            <li>See total days lived</li>
+                        </ol>
+                        <p class="mt-3">This calculator considers leap years for accurate results.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Why Choose CalcFlow?</h2>
+                <p class="lead">Experience the most comprehensive calculator platform</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Lightning Fast</h4>
+                        <p>Instant calculations with no waiting time</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>Mobile Friendly</h4>
+                        <p>Works perfectly on all devices and screen sizes</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Secure & Private</h4>
+                        <p>Your data never leaves your browser</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h4>Accurate Results</h4>
+                        <p>Precise calculations using standard formulas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="navbar-brand mb-0"><i class="fas fa-calculator"></i> CalcFlow</h3>
+                    </div>
+                    <p>&copy; 2023 CalcFlow. All rights reserved.</p>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="footer-links text-center text-md-end mb-3">
+                        <a href="#privacy">Privacy Policy</a>
+                        <a href="#terms">Terms of Service</a>
+                        <a href="#contact">Contact Us</a>
+                    </div>
+                    
+                    <div class="social-icons text-center text-md-end">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation
+            const calcCards = document.querySelectorAll('.calc-card');
+            const calcSections = document.querySelectorAll('.calc-section');
+            const heroSection = document.getElementById('home');
+            
+            // Handle calculator card clicks
+            calcCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const calcType = this.getAttribute('data-calc');
+                    showCalculator(calcType);
+                });
+            });
+            
+            // Show specific calculator
+            function showCalculator(calcType) {
+                // Hide hero and all calculator sections
+                heroSection.style.display = 'none';
+                calcSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected calculator
+                const targetSection = document.getElementById(calcType);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+            
+            // Navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    
+                    if (targetId === '#home') {
+                        // Show hero and hide all calculators
+                        heroSection.style.display = 'block';
+                        calcSections.forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else if (targetId === '#calculators') {
+                        // Show hero and scroll to calculators
+                        heroSection.style.display = 'block';
+                        calcSections.forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        const calculatorsGrid = document.getElementById('homeCalculators');
+                        if (calculatorsGrid) {
+                            calculatorsGrid.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    } else {
+                        // Regular anchor links
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+            
+            // SIP Calculator
+            const sipForm = document.getElementById('sipForm');
+            if (sipForm) {
+                sipForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const amount = parseFloat(document.getElementById('sipAmount').value);
+                    const rate = parseFloat(document.getElementById('sipRate').value) / 100 / 12;
+                    const years = parseInt(document.getElementById('sipYears').value);
+                    const months = years * 12;
+                    
+                    // FV = P * (((1 + r)^n - 1) / r)
+                    const futureValue = amount * ((Math.pow(1 + rate, months) - 1) / rate);
+                    const totalInvestment = amount * months;
+                    const returns = futureValue - totalInvestment;
+                    
+                    document.getElementById('sipInvestment').textContent = '₹' + totalInvestment.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('sipReturns').textContent = '₹' + returns.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('sipTotal').textContent = '₹' + futureValue.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    
+                    document.getElementById('sipResults').classList.add('show');
+                });
+            }
+            
+            // Percentage Calculator
+            const percentageForm = document.getElementById('percentageForm');
+            if (percentageForm) {
+                percentageForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const part = parseFloat(document.getElementById('partValue').value);
+                    const total = parseFloat(document.getElementById('totalValue').value);
+                    
+                    const percentage = (part / total) * 100;
+                    const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+                    const divisor = gcd(part, total);
+                    
+                    document.getElementById('percentageResult').textContent = percentage.toFixed(2) + '%';
+                    document.getElementById('fractionResult').textContent = (part/divisor) + '/' + (total/divisor);
+                    
+                    document.getElementById('percentageResults').classList.add('show');
+                });
+            }
+            
+            // Mortgage Calculator
+            const mortgageForm = document.getElementById('mortgageForm');
+            if (mortgageForm) {
+                mortgageForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const principal = parseFloat(document.getElementById('loanAmount').value);
+                    const annualRate = parseFloat(document.getElementById('interestRate').value) / 100;
+                    const monthlyRate = annualRate / 12;
+                    const years = parseInt(document.getElementById('loanTenure').value);
+                    const months = years * 12;
+                    
+                    // EMI = P × r × (1 + r)^n / ((1 + r)^n - 1)
+                    const emi = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                               (Math.pow(1 + monthlyRate, months) - 1);
+                    const totalPayment = emi * months;
+                    const totalInterest = totalPayment - principal;
+                    
+                    document.getElementById('emiAmount').textContent = '₹' + emi.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('totalInterest').textContent = '₹' + totalInterest.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('totalPayment').textContent = '₹' + totalPayment.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    
+                    document.getElementById('mortgageResults').classList.add('show');
+                });
+            }
+            
+            // Salary Calculator
+            const salaryForm = document.getElementById('salaryForm');
+            if (salaryForm) {
+                salaryForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const gross = parseFloat(document.getElementById('grossSalary').value);
+                    const profTax = parseFloat(document.getElementById('profTax').value) || 0;
+                    const pfRate = parseFloat(document.getElementById('pfRate').value) || 0;
+                    const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+                    
+                    const pf = gross * (pfRate / 100);
+                    const tax = gross * (taxRate / 100);
+                    const totalDeductions = pf + tax + profTax;
+                    const net = gross - totalDeductions;
+                    
+                    document.getElementById('grossResult').textContent = '₹' + gross.toLocaleString('en-IN');
+                    document.getElementById('deductionsResult').textContent = '₹' + totalDeductions.toLocaleString('en-IN');
+                    document.getElementById('netResult').textContent = '₹' + net.toLocaleString('en-IN');
+                    
+                    document.getElementById('salaryResults').classList.add('show');
+                });
+            }
+            
+            // Calorie Calculator
+            const calorieForm = document.getElementById('calorieForm');
+            if (calorieForm) {
+                calorieForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const age = parseInt(document.getElementById('calAge').value);
+                    const weight = parseFloat(document.getElementById('calWeight').value);
+                    const height = parseFloat(document.getElementById('calHeight').value);
+                    const gender = document.getElementById('calGender').value;
+                    const activity = parseFloat(document.getElementById('calActivity').value);
+                    
+                    // Mifflin-St Jeor Equation
+                    let bmr;
+                    if (gender === 'male') {
+                        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+                    } else {
+                        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+                    }
+                    
+                    const dailyCalories = bmr * activity;
+                    
+                    document.getElementById('bmrResult').textContent = Math.round(bmr) + ' cal';
+                    document.getElementById('dailyCalories').textContent = Math.round(dailyCalories) + ' cal';
+                    
+                    document.getElementById('calorieResults').classList.add('show');
+                });
+            }
+            
+            // BMI Calculator
+            const bmiForm = document.getElementById('bmiForm');
+            if (bmiForm) {
+                bmiForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const weight = parseFloat(document.getElementById('bmiWeight').value);
+                    const height = parseFloat(document.getElementById('bmiHeight').value) / 100; // Convert to meters
+                    
+                    const bmi = weight / (height * height);
+                    let category, categoryClass;
+                    
+                    if (bmi < 18.5) {
+                        category = 'Underweight';
+                        categoryClass = 'bmi-underweight';
+                    } else if (bmi < 25) {
+                        category = 'Normal';
+                        categoryClass = 'bmi-normal';
+                    } else if (bmi < 30) {
+                        category = 'Overweight';
+                        categoryClass = 'bmi-overweight';
+                    } else {
+                        category = 'Obese';
+                        categoryClass = 'bmi-obese';
+                    }
+                    
+                    document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+                    const categoryElement = document.querySelector('#bmiCategory .bmi-category');
+                    categoryElement.textContent = category;
+                    categoryElement.className = 'bmi-category ' + categoryClass;
+                    
+                    document.getElementById('bmiResults').classList.add('show');
+                });
+            }
+            
+            // Age Calculator
+            const ageForm = document.getElementById('ageForm');
+            if (ageForm) {
+                ageForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const birthDate = new Date(document.getElementById('birthDate').value);
+                    const today = new Date();
+                    
+                    let years = today.getFullYear() - birthDate.getFullYear();
+                    let months = today.getMonth() - birthDate.getMonth();
+                    let days = today.getDate() - birthDate.getDate();
+                    
+                    if (days < 0) {
+                        months--;
+                        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+                    }
+                    
+                    if (months < 0) {
+                        years--;
+                        months += 12;
+                    }
+                    
+                    const totalDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
+                    
+                    document.getElementById('ageYears').textContent = years;
+                    document.getElementById('ageMonths').textContent = months;
+                    document.getElementById('ageDays').textContent = days;
+                    document.getElementById('totalDays').textContent = totalDays.toLocaleString();
+                    
+                    document.getElementById('ageResults').classList.add('show');
+                });
+            }
+            
+            // Add animation to feature cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
