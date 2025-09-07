@@ -57,6 +57,7 @@
             background-color: var(--darker);
             color: var(--light);
             overflow-x: hidden;
+            padding-top: 80px; /* Fixed header height */
         }
         
         h1, h2, h3, h4 {
@@ -71,6 +72,7 @@
             padding: 1rem 0;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             z-index: 1000;
+            height: 80px; /* Fixed height */
         }
         
         .navbar-brand {
@@ -113,11 +115,12 @@
         .hero {
             background: linear-gradient(rgba(7, 7, 21, 0.9), rgba(7, 7, 21, 0.9)), 
                         url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920') center/cover no-repeat;
-            min-height: 100vh;
+            min-height: calc(100vh - 80px); /* Subtract header height */
             display: flex;
             align-items: center;
             position: relative;
             overflow: hidden;
+            padding-top: 20px; /* Add some space at top */
         }
         
         .flow-line {
@@ -143,6 +146,7 @@
         .hero-content {
             position: relative;
             z-index: 10;
+            width: 100%;
         }
         
         .hero h1 {
@@ -161,6 +165,24 @@
             margin-bottom: 2.5rem;
             max-width: 700px;
             color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Ad Container */
+        .ad-container {
+            margin: 3rem 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .ad-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         /* Calculator Grid */
@@ -255,6 +277,44 @@
         
         .calc-section.active {
             display: block;
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: none;
+            background: var(--gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+            color: white;
+        }
+        
+        .calc-section.active .back-button {
+            display: inline-flex;
+        }
+        
+        @media (max-width: 768px) {
+            .back-button {
+                display: inline-flex !important;
+                position: fixed;
+                top: 90px;
+                left: 15px;
+                z-index: 999;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
         }
         
         .calc-header {
@@ -502,6 +562,23 @@
             .calculator-grid {
                 grid-template-columns: 1fr;
             }
+            
+            body {
+                padding-top: 70px; /* Smaller header on mobile */
+            }
+            
+            .navbar {
+                height: auto;
+                padding: 0.5rem 0;
+            }
+            
+            .hero {
+                min-height: calc(100vh - 70px);
+            }
+            
+            .calc-header h2 {
+                font-size: 2.2rem;
+            }
         }
     </style>
 </head>
@@ -531,7 +608,6 @@
             </div>
         </div>
     </nav>
-
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="flow-line"></div>
@@ -552,7 +628,7 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3>SIP Calculator</h3>
-                        <p Calculate your Systematic Investment Plan returns and wealth growth over time.</p>
+                        <p>Calculate your Systematic Investment Plan returns and wealth growth over time.</p>
                         <button class="calc-btn">Calculate Now</button>
                     </div>
                     
@@ -616,14 +692,24 @@
                         <button class="calc-btn">Calculate Now</button>
                     </div>
                 </div>
+                
+                <!-- Ad Placement 1 -->
+                <div class="ad-container">
+                    <p class="ad-label">Advertisement</p>
+                    <script async="async" data-cfasync="false" src="//pl27595137.revenuecpmgate.com/b0dbc9588eb715f919e914da5230f144/invoke.js"></script>
+                    <div id="container-b0dbc9588eb715f919e914da5230f144"></div>
+                </div>
             </div>
         </div>
     </section>
-
     <!-- Calculator Sections -->
     <div class="container">
         <!-- SIP Calculator Section -->
         <section id="sip" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-chart-line me-3"></i>SIP Calculator</h2>
                 <p>Calculate your investment growth with Systematic Investment Plan</p>
@@ -682,12 +768,22 @@
                         </ol>
                         <p class="mt-3"><strong>Formula:</strong> FV = P × ((1 + r)^n - 1) / r</p>
                     </div>
+                    
+                    <!-- Ad Placement 2 -->
+                    <div class="ad-container mt-4">
+                        <p class="ad-label">Advertisement</p>
+                        <script async="async" data-cfasync="false" src="//pl27595137.revenuecpmgate.com/b0dbc9588eb715f919e914da5230f144/invoke.js"></script>
+                        <div id="container-b0dbc9588eb715f919e914da5230f144"></div>
+                    </div>
                 </div>
             </div>
         </section>
-
         <!-- Percentage Calculator Section -->
         <section id="percentage" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-percent me-3"></i>Percentage Calculator</h2>
                 <p>Calculate percentages quickly and accurately</p>
@@ -741,9 +837,12 @@
                 </div>
             </div>
         </section>
-
         <!-- Mortgage Calculator Section -->
         <section id="mortgage" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-home me-3"></i>Mortgage Calculator</h2>
                 <p>Calculate your home loan EMI and total interest</p>
@@ -805,9 +904,12 @@
                 </div>
             </div>
         </section>
-
         <!-- Salary Calculator Section -->
         <section id="salary" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-money-bill-wave me-3"></i>Salary Calculator</h2>
                 <p>Calculate your take-home salary after deductions</p>
@@ -879,9 +981,12 @@
                 </div>
             </div>
         </section>
-
         <!-- Calorie Calculator Section -->
         <section id="calorie" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-fire me-3"></i>Calorie Calculator</h2>
                 <p>Calculate your daily calorie requirements</p>
@@ -964,9 +1069,12 @@
                 </div>
             </div>
         </section>
-
         <!-- BMI Calculator Section -->
         <section id="bmi" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-weight me-3"></i>BMI Calculator</h2>
                 <p>Calculate your Body Mass Index and health category</p>
@@ -1029,9 +1137,12 @@
                 </div>
             </div>
         </section>
-
         <!-- Age Calculator Section -->
         <section id="age" class="calc-section">
+            <a href="#" class="back-button" onclick="goBackToHome(event)">
+                <i class="fas fa-arrow-left"></i> Back to Calculators
+            </a>
+            
             <div class="calc-header">
                 <h2><i class="fas fa-birthday-cake me-3"></i>Age Calculator</h2>
                 <p>Calculate your exact age in years, months, and days</p>
@@ -1084,13 +1195,19 @@
             </div>
         </section>
     </div>
-
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
             <div class="section-title text-center">
                 <h2>Why Choose CalcFlow?</h2>
                 <p class="lead">Experience the most comprehensive calculator platform</p>
+            </div>
+            
+            <!-- Ad Placement 3 -->
+            <div class="ad-container mb-4">
+                <p class="ad-label">Advertisement</p>
+                <script async="async" data-cfasync="false" src="//pl27595137.revenuecpmgate.com/b0dbc9588eb715f919e914da5230f144/invoke.js"></script>
+                <div id="container-b0dbc9588eb715f919e914da5230f144"></div>
             </div>
             
             <div class="row g-4">
@@ -1136,7 +1253,6 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -1165,7 +1281,6 @@
             </div>
         </div>
     </footer>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -1448,6 +1563,23 @@
                 observer.observe(card);
             });
         });
+        
+        // Function to go back to home
+        function goBackToHome(event) {
+            event.preventDefault();
+            
+            const heroSection = document.getElementById('home');
+            const calcSections = document.querySelectorAll('.calc-section');
+            
+            // Show hero and hide all calculators
+            heroSection.style.display = 'block';
+            calcSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
